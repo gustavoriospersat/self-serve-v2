@@ -1,0 +1,1932 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Persat GO — Operación en campo, simple y visible</title>
+  <meta name="description" content="Digitalizá técnicos, visitas, logística e inspecciones en minutos. Persat GO ordena tu operación en campo desde USD 99/mes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #FF8323;
+      --orange-dark: #E27023;
+      --orange-soft: #FFF1E7;
+      --violet: #3E35AF;
+      --violet-dark: #2A2A87;
+      --gray: #CECECE;
+      --light: #EEEEEE;
+      --ink: #121225;
+      --muted: #6F7182;
+      --white: #FFFFFF;
+      --black: #050506;
+      --success: #22A06B;
+      --shadow: 0 24px 70px rgba(18, 18, 37, .14);
+      --radius-xl: 32px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--ink);
+      background: #fff;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .page {
+      position: relative;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 82% 8%, rgba(255, 131, 35, .20), transparent 28%),
+        radial-gradient(circle at 12% 12%, rgba(62, 53, 175, .14), transparent 24%),
+        linear-gradient(180deg, #FFFFFF 0%, #FFF8F3 46%, #FFFFFF 100%);
+    }
+
+    .container {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: rgba(255,255,255,.78);
+      border-bottom: 1px solid rgba(18,18,37,.07);
+    }
+
+    .nav-inner {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      height: 48px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-weight: 700;
+      font-size: 14px;
+      color: rgba(18,18,37,.72);
+    }
+
+    .nav-links a:hover { color: var(--orange); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 999px;
+      padding: 15px 22px;
+      font-family: inherit;
+      font-weight: 900;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      color: white;
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      box-shadow: 0 16px 32px rgba(255, 131, 35, .32);
+    }
+
+    .btn-primary:hover { box-shadow: 0 22px 42px rgba(255, 131, 35, .42); }
+
+    .btn-secondary {
+      color: var(--violet-dark);
+      background: white;
+      border: 1px solid rgba(42,42,135,.12);
+      box-shadow: 0 12px 28px rgba(18,18,37,.07);
+    }
+
+    .btn-ghost {
+      color: var(--violet-dark);
+      background: rgba(62, 53, 175, .08);
+    }
+
+    .hero {
+      position: relative;
+      padding: 70px 0 46px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.02fr .98fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 131, 35, .12);
+      color: var(--orange-dark);
+      font-weight: 900;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 0 6px rgba(34,160,107,.12);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 720px;
+      font-size: clamp(42px, 6vw, 78px);
+      line-height: .92;
+      letter-spacing: -0.07em;
+      font-weight: 900;
+      color: #111122;
+    }
+
+    .accent { color: var(--orange); }
+    .violet { color: var(--violet); }
+
+    .hero-copy {
+      margin: 24px 0 0;
+      max-width: 610px;
+      color: var(--muted);
+      font-size: clamp(17px, 2vw, 21px);
+      line-height: 1.52;
+      font-weight: 600;
+    }
+
+    .hero-actions {
+      margin-top: 34px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .microtrust {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+      color: rgba(18,18,37,.62);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .microtrust span {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(34,160,107,.12);
+      color: var(--success);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .hero-card {
+      position: relative;
+      border-radius: 38px;
+      background: linear-gradient(145deg, #15152A, #24235A 54%, #0E0E18);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      min-height: 560px;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,131,35,.38), transparent 68%);
+      right: -110px;
+      top: -110px;
+    }
+
+    .hero-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(180deg, black, transparent 74%);
+    }
+
+    .app-window {
+      position: relative;
+      z-index: 2;
+      background: rgba(255,255,255,.96);
+      border-radius: 28px;
+      min-height: 520px;
+      padding: 18px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.8);
+      overflow: hidden;
+    }
+
+    .window-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .dots { display: flex; gap: 7px; }
+    .dots i { width: 10px; height: 10px; border-radius: 50%; background: #E0E0E0; display: block; }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(34,160,107,.12);
+      color: #11784C;
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .metric,
+    .task,
+    .route-card,
+    .quote-card {
+      background: white;
+      border: 1px solid rgba(18,18,37,.08);
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow: 0 12px 30px rgba(18,18,37,.06);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 30px;
+      letter-spacing: -0.04em;
+      color: var(--violet-dark);
+    }
+
+    .metric span, .task span, .route-card span { color: var(--muted); font-size: 12px; font-weight: 800; }
+
+    .task { grid-column: span 2; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+
+    .avatar-row { display: flex; align-items: center; gap: 10px; }
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--orange), var(--violet));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+    }
+
+    .progress {
+      height: 10px;
+      border-radius: 999px;
+      background: #ECECF5;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+
+    .bar { width: 78%; height: 100%; background: linear-gradient(90deg, var(--orange), var(--violet)); border-radius: inherit; }
+
+    .route-card { grid-column: span 2; }
+
+    .route-map {
+      height: 150px;
+      border-radius: 20px;
+      margin-top: 12px;
+      background:
+        radial-gradient(circle at 18% 34%, var(--orange) 0 6px, transparent 7px),
+        radial-gradient(circle at 72% 25%, var(--violet) 0 6px, transparent 7px),
+        radial-gradient(circle at 54% 75%, var(--orange) 0 6px, transparent 7px),
+        linear-gradient(135deg, #F3F4FA, #FFFFFF);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .route-map::before {
+      content: '';
+      position: absolute;
+      inset: 30px 60px 55px 65px;
+      border: 3px dashed rgba(62,53,175,.22);
+      border-radius: 55% 45% 60% 40%;
+      transform: rotate(-8deg);
+    }
+
+    .floating {
+      position: absolute;
+      z-index: 4;
+      right: 8px;
+      bottom: 38px;
+      width: min(280px, 46vw);
+      background: white;
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: 0 26px 70px rgba(18,18,37,.20);
+      border: 1px solid rgba(18,18,37,.08);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .floating-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .floating strong { color: var(--ink); font-size: 14px; }
+    .floating p { color: var(--muted); margin: 6px 0 0; font-size: 12px; font-weight: 700; line-height: 1.4; }
+
+    .app-proof {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+      background: rgba(255,255,255,.80);
+      border: 1px solid rgba(18,18,37,.08);
+      border-radius: 26px;
+      padding: 16px;
+      box-shadow: 0 18px 45px rgba(18,18,37,.08);
+      max-width: 560px;
+    }
+
+    .app-proof-copy {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .phone-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--violet-dark), var(--violet));
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 14px 26px rgba(62,53,175,.20);
+    }
+
+    .app-proof strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--violet-dark);
+    }
+
+    .app-proof small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .play-badge {
+      min-width: 154px;
+      border-radius: 16px;
+      background: #111122;
+      color: white;
+      padding: 10px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 16px 34px rgba(18,18,37,.18);
+    }
+
+    .play-triangle {
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-left: 16px solid var(--orange);
+    }
+
+    .play-badge span {
+      display: block;
+      font-size: 9px;
+      font-weight: 700;
+      opacity: .78;
+      line-height: 1;
+    }
+
+    .play-badge b {
+      display: block;
+      font-size: 17px;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+    }
+
+    .trust-strip {
+      margin: 38px auto 0;
+      border: 1px solid rgba(18,18,37,.07);
+      background: rgba(255,255,255,.72);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 18px 45px rgba(18,18,37,.06);
+      padding: 18px;
+      display: grid;
+      grid-template-columns: .9fr repeat(3, 1fr);
+      gap: 12px;
+      align-items: center;
+    }
+
+    .trust-title { font-weight: 900; letter-spacing: -0.03em; color: var(--violet-dark); }
+    .trust-item { padding: 14px 16px; border-radius: 18px; background: white; font-weight: 900; color: rgba(18,18,37,.78); display: flex; align-items: center; gap: 10px; }
+    .trust-item small { display: block; color: var(--muted); font-size: 11px; font-weight: 700; margin-top: 2px; }
+
+    section { padding: 74px 0; }
+
+    .section-head {
+      max-width: 760px;
+      margin: 0 auto 34px;
+      text-align: center;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(32px, 4vw, 54px);
+      line-height: 1.02;
+      letter-spacing: -0.06em;
+      font-weight: 900;
+    }
+
+    .section-head p {
+      margin: 16px auto 0;
+      max-width: 660px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.5;
+      font-weight: 600;
+    }
+
+    .benefits {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .benefit-card {
+      position: relative;
+      min-height: 300px;
+      background: white;
+      border: 1px solid rgba(18,18,37,.07);
+      border-radius: var(--radius-xl);
+      padding: 26px;
+      box-shadow: 0 18px 45px rgba(18,18,37,.06);
+      overflow: hidden;
+    }
+
+    .benefit-card::after {
+      content: '';
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      background: linear-gradient(135deg, rgba(255,131,35,.14), rgba(62,53,175,.10));
+      border-radius: 50%;
+      right: -70px;
+      bottom: -70px;
+    }
+
+    .icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--orange-soft);
+      color: var(--orange-dark);
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .benefit-card h3, .price-card h3, .module-card h3 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      font-weight: 900;
+    }
+
+    .benefit-card p, .module-card p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-weight: 600;
+    }
+
+    .benefit-proof {
+      margin-top: 22px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--violet-dark);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .conversion-block {
+      background: #111122;
+      color: white;
+      border-radius: 44px;
+      padding: 36px;
+      display: grid;
+      grid-template-columns: .86fr 1.14fr;
+      gap: 30px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .conversion-block::before {
+      content: '';
+      position: absolute;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,131,35,.28), transparent 68%);
+      left: -180px;
+      top: -190px;
+    }
+
+    .conversion-copy { position: relative; z-index: 2; }
+
+    .conversion-copy h2 {
+      font-size: clamp(32px, 4vw, 56px);
+      line-height: 1;
+      letter-spacing: -0.06em;
+      margin: 0;
+      font-weight: 900;
+    }
+
+    .conversion-copy p {
+      color: rgba(255,255,255,.72);
+      font-weight: 600;
+      line-height: 1.6;
+      font-size: 17px;
+    }
+
+    .steps {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .step {
+      background: rgba(255,255,255,.09);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 26px;
+      padding: 22px;
+    }
+
+    .step-number {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      background: var(--orange);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      margin-bottom: 18px;
+    }
+
+    .step h3 { margin: 0; font-size: 19px; letter-spacing: -0.03em; }
+    .step p { margin: 10px 0 0; color: rgba(255,255,255,.66); line-height: 1.45; font-weight: 600; font-size: 14px; }
+
+    .price-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .price-card {
+      background: white;
+      border-radius: 38px;
+      padding: 34px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      min-height:100%;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(18,18,37,.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .price-card::before {
+      content: 'Recomendado';
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--orange);
+      color: white;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .price {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      margin: 24px 0 8px;
+    }
+
+    .price strong {
+      font-size: 58px;
+      letter-spacing: -0.07em;
+      line-height: .9;
+      color: var(--violet-dark);
+    }
+
+    .price span { color: var(--muted); font-weight: 800; }
+
+    .list {
+      list-style: none;
+      padding: 0;
+      margin: 24px 0;
+      display: grid;
+      gap: 13px;
+    }
+
+    .list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: rgba(18,18,37,.78);
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .quote-card {
+      border-radius: 38px;
+      padding: 34px;
+      background: linear-gradient(135deg, #F7F7FF, #FFFFFF);
+      border: 1px solid rgba(18,18,37,.08);
+      box-shadow: 0 20px 50px rgba(18,18,37,.06);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      min-height:100%;
+    }
+
+    .calculator-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(18,18,37,.08);
+    }
+
+    .calculator-row:last-child { border-bottom: 0; }
+    .calculator-row strong { display: block; font-weight: 900; }
+    .calculator-row small { color: var(--muted); font-weight: 700; }
+
+    .qty {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      border-radius: 999px;
+      padding: 8px;
+      border: 1px solid rgba(18,18,37,.08);
+    }
+
+    .qty button {
+      width: 30px;
+      height: 30px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--orange-soft);
+      color: var(--orange-dark);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .total-box {
+      margin-top: 22px;
+      background: #111122;
+      color: white;
+      border-radius: 28px;
+      padding: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .total-box span { color: rgba(255,255,255,.64); font-weight: 700; font-size: 13px; }
+    .total-box strong { font-size: 34px; letter-spacing: -0.05em; }
+
+    .modules {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .module-card {
+      padding: 24px;
+      border-radius: 28px;
+      background: white;
+      border: 1px solid rgba(18,18,37,.07);
+      box-shadow: 0 16px 40px rgba(18,18,37,.055);
+    }
+
+    .module-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .module-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 0 8px rgba(255,131,35,.12);
+    }
+
+    .proof-cloud {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .proof-main {
+      background: linear-gradient(135deg, #111122, var(--violet-dark));
+      color: white;
+      border-radius: 38px;
+      padding: 34px;
+      position: relative;
+      overflow: hidden;
+      min-height: 360px;
+      box-shadow: var(--shadow);
+    }
+
+    .proof-main::before {
+      content: '';
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,131,35,.34), transparent 68%);
+      right: -120px;
+      top: -120px;
+    }
+
+    .proof-main h3 {
+      position: relative;
+      z-index: 2;
+      margin: 0;
+      max-width: 430px;
+      font-size: clamp(32px, 4vw, 54px);
+      line-height: 1;
+      letter-spacing: -0.06em;
+      font-weight: 900;
+    }
+
+    .proof-main p {
+      position: relative;
+      z-index: 2;
+      margin: 18px 0 0;
+      max-width: 460px;
+      color: rgba(255,255,255,.72);
+      line-height: 1.6;
+      font-weight: 600;
+    }
+
+    .proof-tags {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .proof-tags span {
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.88);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .proof-bubbles {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .proof-bubble {
+      background: white;
+      border: 1px solid rgba(18,18,37,.07);
+      border-radius: 28px;
+      padding: 22px;
+      box-shadow: 0 18px 42px rgba(18,18,37,.06);
+      animation: softFloat 5s ease-in-out infinite;
+    }
+
+    .proof-bubble:nth-child(2) { animation-delay: .6s; }
+    .proof-bubble:nth-child(3) { animation-delay: 1.1s; }
+    .proof-bubble:nth-child(4) { animation-delay: 1.7s; }
+
+    @keyframes softFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .proof-bubble strong {
+      display: block;
+      font-size: 28px;
+      letter-spacing: -0.05em;
+      color: var(--violet-dark);
+      margin-bottom: 8px;
+    }
+
+    .proof-bubble p {
+      margin: 0;
+      color: rgba(18,18,37,.76);
+      line-height: 1.42;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .proof-bubble small {
+      display: block;
+      color: var(--muted);
+      font-weight: 800;
+      margin-top: 14px;
+      font-size: 12px;
+    }
+
+    .testimonials {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .testimonial {
+      background: white;
+      border-radius: 30px;
+      padding: 26px;
+      border: 1px solid rgba(18,18,37,.07);
+      box-shadow: 0 18px 42px rgba(18,18,37,.06);
+    }
+
+    .testimonial p {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.45;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .testimonial span {
+      display: block;
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .faq {
+      max-width: 860px;
+      margin: 0 auto;
+      display: grid;
+      gap: 12px;
+    }
+
+    details {
+      background: white;
+      border: 1px solid rgba(18,18,37,.08);
+      border-radius: 22px;
+      padding: 20px 22px;
+      box-shadow: 0 12px 32px rgba(18,18,37,.045);
+    }
+
+    summary {
+      list-style: none;
+      cursor: pointer;
+      font-weight: 900;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: '+'; color: var(--orange); font-size: 24px; line-height: 1; }
+    details[open] summary::after { content: '−'; }
+
+    details p {
+      color: var(--muted);
+      font-weight: 600;
+      line-height: 1.55;
+      margin: 14px 0 0;
+    }
+
+    .final-cta {
+      padding: 76px 0 100px;
+    }
+
+    .final-card {
+      border-radius: 46px;
+      padding: 54px;
+      background:
+        radial-gradient(circle at 76% 22%, rgba(255,131,35,.36), transparent 28%),
+        linear-gradient(135deg, var(--violet-dark), #111122 74%);
+      color: white;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .final-card h2 {
+      margin: 0 auto;
+      max-width: 780px;
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: 1;
+      letter-spacing: -0.07em;
+      font-weight: 900;
+    }
+
+    .final-card p {
+      max-width: 560px;
+      margin: 18px auto 30px;
+      color: rgba(255,255,255,.72);
+      font-size: 18px;
+      line-height: 1.55;
+      font-weight: 600;
+    }
+
+    .sticky-mobile {
+      display: none;
+      position: fixed;
+      z-index: 70;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(18,18,37,.10);
+      box-shadow: 0 16px 50px rgba(18,18,37,.20);
+      backdrop-filter: blur(18px);
+      border-radius: 999px;
+      padding: 8px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .sticky-mobile strong {
+      font-size: 13px;
+      margin-left: 12px;
+      line-height: 1.2;
+    }
+
+    .sticky-mobile .btn { padding: 13px 16px; }
+
+    .checkout-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(5,5,6,.72);
+      backdrop-filter: blur(10px);
+      padding: 18px;
+    }
+
+    .checkout-modal.active { display: flex; }
+
+    .checkout-card {
+      width: min(980px, 100%);
+      max-height: 92vh;
+      overflow: auto;
+      background: white;
+      border-radius: 38px;
+      box-shadow: 0 40px 120px rgba(0,0,0,.35);
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+    }
+
+    .checkout-main, .checkout-aside { padding: 34px; }
+    .checkout-aside { background: #F7F7FF; border-radius: 0 38px 38px 0; }
+
+    .modal-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .modal-top h2 { margin: 0; font-size: 34px; letter-spacing: -0.05em; line-height: 1; }
+    .modal-top p { margin: 8px 0 0; color: var(--muted); font-weight: 600; }
+
+    .close {
+      border: 0;
+      background: rgba(18,18,37,.06);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    label { display: grid; gap: 7px; font-size: 13px; font-weight: 900; color: rgba(18,18,37,.74); }
+
+    input, select {
+      width: 100%;
+      border: 1px solid rgba(18,18,37,.12);
+      border-radius: 16px;
+      padding: 15px 14px;
+      font-family: inherit;
+      font-weight: 700;
+      outline: none;
+      background: white;
+    }
+
+    input:focus, select:focus { border-color: var(--orange); box-shadow: 0 0 0 4px rgba(255,131,35,.12); }
+
+    .full { grid-column: span 2; }
+
+    .payment-options { display: grid; gap: 10px; margin-top: 16px; }
+    .payment-option {
+      border: 1px solid rgba(18,18,37,.10);
+      border-radius: 20px;
+      background: white;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+    }
+
+    .payment-option:hover,
+    .payment-option.selected {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 4px rgba(255,131,35,.10);
+      transform: translateY(-1px);
+    }
+
+    .payment-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .payment-logo {
+      min-width: 74px;
+      height: 34px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+
+    .paypal-logo { background: #EEF6FF; color: #003087; }
+    .mp-logo { background: #EAF7FF; color: #009EE3; }
+
+    .payment-copy strong { display:block; }
+    .payment-copy small { display:block; margin-top:3px; color:var(--muted); font-weight:700; }
+
+    .thank-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 110;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(5,5,6,.72);
+      backdrop-filter: blur(10px);
+    }
+
+    .thank-modal.active { display: flex; }
+
+    .thank-card {
+      width: min(720px, 100%);
+      background: white;
+      border-radius: 42px;
+      padding: 48px;
+      text-align: center;
+      box-shadow: 0 40px 120px rgba(0,0,0,.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .thank-card::before {
+      content: '';
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,131,35,.18), transparent 70%);
+      right: -110px;
+      top: -130px;
+    }
+
+    .thank-icon {
+      width: 74px;
+      height: 74px;
+      border-radius: 26px;
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      font-weight: 900;
+      margin-bottom: 22px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .thank-card h2 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1;
+      letter-spacing: -0.07em;
+      font-weight: 900;
+      color: #111122;
+      position: relative;
+      z-index: 2;
+    }
+
+    .thank-card p {
+      margin: 18px auto 28px;
+      max-width: 520px;
+      color: var(--muted);
+      font-weight: 600;
+      line-height: 1.6;
+      position: relative;
+      z-index: 2;
+    }
+
+    .thank-next {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 26px 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .thank-step {
+      background: #F7F7FF;
+      border: 1px solid rgba(18,18,37,.08);
+      border-radius: 20px;
+      padding: 16px;
+      font-size: 13px;
+      color: rgba(18,18,37,.72);
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .thank-step b { display:block; color:var(--violet-dark); margin-bottom:6px; }
+
+    .secure-line {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .aside-card {
+      background: white;
+      border-radius: 26px;
+      padding: 22px;
+      border: 1px solid rgba(18,18,37,.08);
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px 0;
+      border-bottom: 1px solid rgba(18,18,37,.08);
+      color: rgba(18,18,37,.72);
+      font-weight: 800;
+    }
+
+    .summary-line:last-child { border-bottom: 0; }
+    .summary-total { font-size: 28px; color: var(--violet-dark); font-weight: 900; letter-spacing: -0.05em; }
+
+    @media (max-width: 980px) {
+      .nav-links { display: none; }
+      .hero { padding-top: 42px; }
+      .hero-grid, .conversion-block, .price-layout, .checkout-card { grid-template-columns: 1fr; }
+      .hero-card { min-height: 500px; }
+      .benefits, .modules, .testimonials, .proof-cloud, .proof-bubbles { grid-template-columns: 1fr; }
+      .trust-strip { grid-template-columns: 1fr 1fr; }
+      .steps { grid-template-columns: 1fr; }
+      .checkout-aside { border-radius: 0 0 38px 38px; }
+    }
+
+    @media (max-width: 640px) {
+      .thank-card { padding: 32px 22px; border-radius: 30px; }
+      .thank-next { grid-template-columns: 1fr; }
+      .container { width: min(100% - 28px, var(--max)); }
+      .nav-inner { height: 64px; }
+      .nav-actions .btn-secondary { display: none; }
+      .brand { font-size: 21px; }
+      h1 { font-size: 44px; }
+      .hero-copy { font-size: 16px; }
+      .hero-actions .btn { width: 100%; }
+      .hero-card { min-height: 520px; border-radius: 30px; padding: 12px; }
+      .dashboard { grid-template-columns: 1fr; }
+      .task, .route-card { grid-column: span 1; }
+      .floating { width: calc(100% - 36px); right: 18px; bottom: 20px; }
+      .trust-strip { grid-template-columns: 1fr; }
+      section { padding: 54px 0; }
+      .section-head h2 { font-size: 34px; }
+      .section-head p { font-size: 16px; }
+      .conversion-block, .final-card { border-radius: 32px; padding: 28px; }
+      .price strong { font-size: 48px; }
+      .total-box { align-items: flex-start; flex-direction: column; }
+      .form-grid { grid-template-columns: 1fr; }
+      .full { grid-column: span 1; }
+      .checkout-main, .checkout-aside { padding: 24px; }
+      .app-proof { grid-template-columns: 1fr; }
+      .play-badge { width: 100%; justify-content: center; }
+      .sticky-mobile { display: flex; }
+      body { padding-bottom: 82px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="nav">
+      <div class="container nav-inner">
+        <a href="#top" class="brand" aria-label="Persat GO">
+          <img class="brand-logo" src="logo persat naranja 11.png" alt="Persat IA" />
+        </a>
+        <nav class="nav-links" aria-label="Navegación principal">
+          <a href="#beneficios">Beneficios</a>
+          <a href="#precio">Precio</a>
+          <a href="#modulos">Módulos</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="btn btn-secondary" href="#demo">Ver cómo funciona</a>
+          <button class="btn btn-primary" onclick="openCheckout()">Probar gratis</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <div class="eyebrow"><span class="pulse"></span> 15 días gratis · activación guiada</div>
+            <h1>Digitalizá tu operación.<br><span class="accent">Activá Persat GO y empezá.</span></h1>
+            <p class="hero-copy">Centralizá técnicos, logística, inspecciones y visitas en una sola plataforma simple, visual y lista para usar desde el primer día.</p>
+            <div class="hero-actions">
+              <button class="btn btn-primary" onclick="openCheckout()">Empezar ahora →</button>
+              <a class="btn btn-secondary" href="#demo">Ver demo rápida</a>
+            </div>
+            <div class="microtrust">
+              <span><b class="check">✓</b> Sin contrato de permanencia</span>
+              <span><b class="check">✓</b> 15 días gratis</span>
+              <span><b class="check">✓</b> Pago seguro</span>
+            </div>
+            <div class="app-proof" aria-label="Aplicación móvil disponible en Google Play">
+              <div class="app-proof-copy">
+                <span class="phone-icon">⌁</span>
+                <div>
+                  <strong>Disponible para equipos Android</strong>
+                  <small>Tu equipo descarga la app y trabaja desde el celular en cada visita.</small>
+                </div>
+              </div>
+              <div class="play-badge" aria-label="Disponible en Google Play">
+                <span class="play-triangle"></span>
+                <div>
+                  <span>Disponible en</span>
+                  <b>Google Play</b>
+                  <small style="display:flex; align-items:center; gap:6px; margin-top:4px; font-size:11px; opacity:.92;">
+                    <span style="letter-spacing:1px; color:#FFD76A;">★★★★★</span>
+                    <span>App para equipos en campo</span>
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-card" id="demo" aria-label="Vista de producto Persat GO">
+            <div class="app-window">
+              <div class="window-top">
+                <div class="dots"><i></i><i></i><i></i></div>
+                <span class="status-pill"><span class="pulse"></span> Operación en vivo</span>
+              </div>
+              <div class="dashboard">
+                <div class="metric"><strong>24</strong><span>visitas activas</span></div>
+                <div class="metric"><strong>92%</strong><span>cumplimiento diario</span></div>
+                <div class="task">
+                  <div class="avatar-row">
+                    <div class="avatar">JG</div>
+                    <div><strong>Juan García</strong><br><span>Zona Norte · En ruta</span></div>
+                  </div>
+                  <span class="status-pill">check-in OK</span>
+                </div>
+                <div class="route-card">
+                  <strong>Ruta inteligente del día</strong><br>
+                  <span>8 visitas · 6 completas · 2 pendientes</span>
+                  <div class="route-map"></div>
+                </div>
+              </div>
+              <div class="floating">
+                <div class="floating-top">
+                  <strong>PIA generó el resumen operativo</strong>
+                  <span class="status-pill">IA</span>
+                </div>
+                <p>PIA analiza visitas, formularios y pendientes para ayudarte a decidir más rápido.</p>
+                <div class="progress"><div class="bar"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container trust-strip" aria-label="Señales de confianza">
+          <div class="trust-title">Confianza operativa desde el primer día</div>
+          <div class="trust-item"><span class="check">✓</span><div>+1500 empresas<small>digitalizadas con Persat</small></div></div>
+          <div class="trust-item"><span class="check">✓</span><div>48 hs<small>activación guiada</small></div></div>
+          <div class="trust-item"><span class="check">✓</span><div>USD 99/mes<small>plan simple</small></div></div>
+        </div>
+      </section>
+
+      <section id="beneficios">
+        <div class="container">
+          <div class="section-head">
+            <h2>Más control operativo. <span class="violet">Todo en un solo lugar.</span></h2>
+            <p>Persat GO convierte el seguimiento operativo en una experiencia simple: tu equipo sabe qué hacer, vos sabés qué está pasando.</p>
+          </div>
+
+          <div class="benefits">
+            <article class="benefit-card">
+              <div class="icon">⌁</div>
+              <h3>Ordená la operación diaria</h3>
+              <p>Asigná visitas, tareas y órdenes de trabajo sin depender de planillas, chats dispersos o seguimiento manual.</p>
+              <div class="benefit-proof"><span class="check">✓</span> Coordinación más simple y centralizada</div>
+            </article>
+            <article class="benefit-card">
+              <div class="icon">◉</div>
+              <h3>Vé todo en tiempo real</h3>
+              <p>Conocé el estado de cada técnico, vendedor, inspector o entrega desde una vista clara y accionable.</p>
+              <div class="benefit-proof"><span class="check">✓</span> Seguimiento claro en tiempo real</div>
+            </article>
+            <article class="benefit-card">
+              <div class="icon">▣</div>
+              <h3>Decidí con datos, no con intuición</h3>
+              <p>Reportes automáticos, formularios digitales y trazabilidad para entender qué pasó y qué falta resolver.</p>
+              <div class="benefit-proof"><span class="check">✓</span> Información lista para actuar</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container conversion-block">
+          <div class="conversion-copy">
+            <h2>Activá tu operación digital en minutos.</h2>
+            <p>Suscribite por USD 99 mensuales para hasta 4 usuarios. Ingresás tu tarjeta hoy y empezás con 15 días de prueba gratis para activar tu operación.</p>
+            <button class="btn btn-primary" onclick="openCheckout()">Activar prueba gratis</button>
+          </div>
+          <div class="steps">
+            <div class="step"><div class="step-number">1</div><h3>Creás tu cuenta</h3><p>Ingresás tus datos y activás la prueba con tu tarjeta de forma segura.</p></div>
+            <div class="step"><div class="step-number">2</div><h3>Configurás tu operación</h3><p>Definís equipo, vertical y módulos con una guía simple.</p></div>
+            <div class="step"><div class="step-number">3</div><h3>Activás el equipo</h3><p>En 48 horas podés tener tu operación funcionando.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="precio">
+        <div class="container">
+          <div class="section-head">
+            <h2>Todo lo que necesitás para empezar.</h2>
+            <p>Persat GO incluye los módulos principales para digitalizar tu operación desde el primer día, con una activación simple y escalable.</p>
+          </div>
+
+          <div class="price-layout">
+            <article class="price-card">
+              <h3>Plan GO</h3>
+              <p style="color: var(--muted); font-weight: 700; line-height: 1.5;">Para empresas que necesitan ordenar equipos en campo sin una implementación pesada.</p>
+              <div class="price"><strong>USD 99</strong><span>/mes</span></div>
+              <div class="microtrust"><span><b class="check">✓</b> 15 días gratis</span><span><b class="check">✓</b> De 1 a 4 usuarios incluidos</span></div>
+              <ul class="list">
+                <li><span class="check">✓</span> Acceso a los 6 módulos principales</li>
+                <li><span class="check">✓</span> Formularios digitales y órdenes de trabajo</li>
+                <li><span class="check">✓</span> Activación guiada en 48 hs</li>
+                <li><span class="check">✓</span> Rastreo incluido por 90 días</li>
+                <li><span class="check">✓</span> Cancelación simple, sin permanencia</li>
+              </ul>
+              <button class="btn btn-primary" style="width:100%" onclick="openCheckout()">Empezar con este plan</button>
+            </article>
+
+            <aside class="quote-card">
+              <div>
+                <div class="eyebrow" style="margin-bottom:18px;">Activación simple</div>
+                <h3 style="max-width:420px;">Empezá rápido. Todo listo para usar.</h3>
+                <p style="color: var(--muted); font-weight: 700; line-height: 1.6; max-width:460px; margin-top:16px;">Persat GO está pensado para activar tu operación sin configuraciones complejas ni procesos largos.</p>
+              </div>
+
+              <div style="display:grid; gap:12px; margin:30px 0 26px;">
+
+                <div style="display:flex; align-items:center; gap:14px; background:white; border:1px solid rgba(18,18,37,.08); border-radius:20px; padding:16px 18px;">
+                  <div style="width:42px; height:42px; border-radius:14px; background:rgba(34,160,107,.12); color:var(--success); display:flex; align-items:center; justify-content:center; font-weight:900;">✓</div>
+                  <div>
+                    <strong style="display:block; font-size:15px; color:#111122;">15 días gratis</strong>
+                    <small style="display:block; margin-top:3px; color:var(--muted); font-weight:700;">Probalo antes del primer cobro.</small>
+                  </div>
+                </div>
+
+                <div style="display:flex; align-items:center; gap:14px; background:white; border:1px solid rgba(18,18,37,.08); border-radius:20px; padding:16px 18px;">
+                  <div style="width:42px; height:42px; border-radius:14px; background:rgba(255,131,35,.12); color:var(--orange); display:flex; align-items:center; justify-content:center; font-weight:900;">⌁</div>
+                  <div>
+                    <strong style="display:block; font-size:15px; color:#111122;">Activación guiada</strong>
+                    <small style="display:block; margin-top:3px; color:var(--muted); font-weight:700;">Te acompañamos para poner en marcha la operación.</small>
+                  </div>
+                </div>
+
+                <div style="display:flex; align-items:center; gap:14px; background:white; border:1px solid rgba(18,18,37,.08); border-radius:20px; padding:16px 18px;">
+                  <div style="width:42px; height:42px; border-radius:14px; background:rgba(62,53,175,.10); color:var(--violet-dark); display:flex; align-items:center; justify-content:center; font-weight:900;">★</div>
+                  <div>
+                    <strong style="display:block; font-size:15px; color:#111122;">+1500 empresas digitalizadas</strong>
+                    <small style="display:block; margin-top:3px; color:var(--muted); font-weight:700;">Operaciones coordinadas con Persat en LATAM.</small>
+                  </div>
+                </div>
+
+              </div>
+
+              <div style="margin-top:auto; padding-top:10px; border-top:1px solid rgba(18,18,37,.08); display:flex; align-items:center; justify-content:space-between; gap:18px;">
+                <div>
+                  <div style="font-size:13px; color:var(--muted); font-weight:800;">Plan GO</div>
+                  <div style="font-size:42px; line-height:.95; letter-spacing:-0.06em; font-weight:900; color:#111122;">USD 99</div>
+                </div>
+                <button class="btn btn-primary" onclick="openCheckout()">Empezar ahora</button>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section id="modulos">
+        <div class="container">
+          <div class="section-head">
+            <h2>Los módulos que tu operación necesita para trabajar de forma más simple y conectada.</h2>
+            <p>Todo lo que necesitás para conectar tu equipo, registrar información en campo y supervisar la operación desde una sola plataforma.</p>
+          </div>
+          <div class="modules">
+            <article class="module-card"><div class="module-top"><span class="module-dot"></span><h3>Clientes</h3></div><p>Información centralizada y actualizada para operar sin pérdida de contexto.</p></article>
+            <article class="module-card"><div class="module-top"><span class="module-dot"></span><h3>Rastreo</h3></div><p>Ubicación y seguimiento de equipos o flota en tiempo real.</p></article>
+            <article class="module-card"><div class="module-top"><span class="module-dot"></span><h3>Entregas</h3></div><p>Rutas, estados y confirmaciones sin perseguir novedades manualmente.</p></article>
+            <article class="module-card"><div class="module-top"><span class="module-dot"></span><h3>Formularios</h3></div><p>Datos, fotos y firmas desde el celular, listos para reportar.</p></article>
+            <article class="module-card"><div class="module-top"><span class="module-dot"></span><h3>Órdenes</h3></div><p>Asignación, avance y cierre de tareas con trazabilidad completa.</p></article>
+            <article class="module-card"><div class="module-top"><span class="module-dot"></span><h3>PIA · IA operativa</h3></div><p>Asistente IA que resume actividad, detecta pendientes y genera reportes automáticamente.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="section-head">
+            <div class="eyebrow" style="justify-content:center; margin-inline:auto;">Empresas que ya operan con Persat</div>
+            <h2>Ayudando a todo tipo de empresas a crecer</h2>
+            <p>Equipos de telecomunicaciones, logística, seguridad, servicios técnicos e industria ya usan Persat para coordinar operaciones en campo.</p>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:44px;">
+            <article style="background:white; border-radius:28px; padding:34px 28px; min-height:300px; border:1px solid rgba(18,18,37,.07); box-shadow:0 18px 42px rgba(18,18,37,.07); display:flex; flex-direction:column; justify-content:space-between; text-align:center;">
+              <div>
+                <div style="color:#FFA51F; font-size:20px; letter-spacing:4px; margin-bottom:24px;">★★★★★</div>
+                <p style="margin:0; color:#3D3D47; font-size:20px; line-height:1.55; font-weight:500; letter-spacing:-0.03em;">La transformación digital es para todos. Con Persat logramos generar un impacto positivo en nuestra PyME.</p>
+              </div>
+              <strong style="display:block; margin-top:32px; font-size:28px; color:#3A3D45; letter-spacing:-0.05em;">Telecentro</strong>
+            </article>
+
+            <article style="background:white; border-radius:28px; padding:34px 28px; min-height:300px; border:1px solid rgba(18,18,37,.07); box-shadow:0 18px 42px rgba(18,18,37,.07); display:flex; flex-direction:column; justify-content:space-between; text-align:center;">
+              <div>
+                <div style="color:#FFA51F; font-size:20px; letter-spacing:4px; margin-bottom:24px;">★★★★★</div>
+                <p style="margin:0; color:#3D3D47; font-size:20px; line-height:1.55; font-weight:500; letter-spacing:-0.03em;">Persat nos ayuda a tomar decisiones más rápido y a mejorar la coordinación diaria de nuestros equipos.</p>
+              </div>
+              <strong style="display:block; margin-top:32px; font-size:30px; color:#111122; letter-spacing:-0.06em;">LoJack</strong>
+            </article>
+
+            <article style="background:white; border-radius:28px; padding:34px 28px; min-height:300px; border:1px solid rgba(18,18,37,.07); box-shadow:0 18px 42px rgba(18,18,37,.07); display:flex; flex-direction:column; justify-content:space-between; text-align:center;">
+              <div>
+                <div style="color:#FFA51F; font-size:20px; letter-spacing:4px; margin-bottom:24px;">★★★★★</div>
+                <p style="margin:0; color:#3D3D47; font-size:20px; line-height:1.55; font-weight:500; letter-spacing:-0.03em;">Persat es una herramienta amplia que resuelve gran parte de las necesidades que tenemos en calle.</p>
+              </div>
+              <strong style="display:block; margin-top:32px; font-size:30px; color:#1777A8; letter-spacing:-0.05em;">TeleRed</strong>
+            </article>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:46px; align-items:center; margin-top:74px;">
+            <div>
+              <h3 style="margin:0; font-size:clamp(34px,4vw,58px); line-height:1.02; letter-spacing:-0.07em; color:#111122; font-weight:900;">Optimizando la gestión de equipos en campo</h3>
+              <p style="margin:22px 0 0; color:var(--muted); font-size:20px; line-height:1.7; font-weight:500; max-width:640px;">Con la app de Persat, empresas en múltiples países mejoran la planificación, gestión y performance en tiempo real de sus equipos en campo.</p>
+
+              <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:30px; margin-top:42px;">
+                <div>
+                  <div style="font-size:86px; line-height:.9; font-weight:900; letter-spacing:-0.08em; color:#111122;"><span style="color:var(--orange);">+</span>1500</div>
+                  <div style="font-size:28px; line-height:1.05; letter-spacing:-0.05em; margin-top:12px; font-weight:700; color:#111122;">empresas<br>digitalizadas</div>
+                </div>
+                <div>
+                  <div style="font-size:86px; line-height:.9; font-weight:900; letter-spacing:-0.08em; color:#111122;"><span style="color:var(--orange);">+</span>12K</div>
+                  <div style="font-size:28px; line-height:1.05; letter-spacing:-0.05em; margin-top:12px; font-weight:700; color:#111122;">equipos<br>coordinados</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="position:relative; min-height:560px; border-radius:36px; overflow:hidden; background:linear-gradient(135deg,#081426 0%,#102340 100%); box-shadow:0 30px 80px rgba(5,10,30,.14); isolation:isolate;">
+
+              <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1800&auto=format&fit=crop"
+                   alt="Operación en campo conectada"
+                   style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.18; filter:contrast(1.15) saturate(.9);" />
+
+              <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(4,10,20,.10) 0%, rgba(4,10,20,.38) 100%); z-index:1;"></div>
+
+              <svg viewBox="0 0 700 560" style="position:absolute; inset:0; width:100%; height:100%; z-index:2;">
+                <defs>
+                  <filter id="flowGlow">
+                    <feGaussianBlur stdDeviation="4" result="blur"/>
+                    <feMerge>
+                      <feMergeNode in="blur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+                </defs>
+
+                <g opacity=".18">
+                  <path d="M180 120 C240 170 260 240 320 290" stroke="#68DFFF" stroke-width="2" fill="none"/>
+                  <path d="M320 290 C380 340 430 390 500 450" stroke="#FF8323" stroke-width="2.5" fill="none"/>
+                  <path d="M320 290 C420 240 510 210 590 240" stroke="#68DFFF" stroke-width="1.8" fill="none"/>
+                </g>
+
+                <g filter="url(#flowGlow)">
+                  <circle cx="180" cy="120" r="8" fill="#68DFFF"/>
+                  <circle cx="320" cy="290" r="10" fill="#FFFFFF"/>
+                  <circle cx="500" cy="450" r="10" fill="#FF8323"/>
+                  <circle cx="590" cy="240" r="7" fill="#68DFFF"/>
+                </g>
+              </svg>
+
+              <div style="position:absolute; top:24px; left:24px; z-index:3; background:rgba(8,18,34,.58); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.08); border-radius:999px; padding:10px 16px; display:inline-flex; align-items:center; gap:10px; color:white; font-size:13px; font-weight:800;">
+                <span style="color:#FF9900; font-weight:900;">AWS</span>
+                Infraestructura cloud segura
+              </div>
+
+              <div style="position:absolute; left:90px; top:140px; z-index:4; background:white; border-radius:18px; padding:12px 14px; box-shadow:0 18px 40px rgba(0,0,0,.18); display:flex; align-items:center; gap:10px;">
+                <div style="width:42px; height:42px; border-radius:14px; background:linear-gradient(135deg,#FF8323,#FFB16E); display:flex; align-items:center; justify-content:center; color:white; font-size:20px;">🚚</div>
+                <div>
+                  <strong style="display:block; font-size:13px; color:#111122;">Técnico asignado</strong>
+                  <span style="font-size:11px; color:#6F7182; font-weight:700;">Ruta optimizada · En camino</span>
+                </div>
+              </div>
+
+              <div style="position:absolute; right:80px; top:190px; z-index:4; background:white; border-radius:18px; padding:12px 14px; box-shadow:0 18px 40px rgba(0,0,0,.18); display:flex; align-items:center; gap:10px;">
+                <div style="width:42px; height:42px; border-radius:14px; background:linear-gradient(135deg,#3E35AF,#6E64FF); display:flex; align-items:center; justify-content:center; color:white; font-size:20px;">📱</div>
+                <div>
+                  <strong style="display:block; font-size:13px; color:#111122;">Check-in realizado</strong>
+                  <span style="font-size:11px; color:#6F7182; font-weight:700;">Visita validada en tiempo real</span>
+                </div>
+              </div>
+
+              <div style="position:absolute; bottom:26px; left:26px; z-index:3; display:flex; gap:14px; flex-wrap:wrap;">
+
+                <div style="background:rgba(8,18,34,.68); backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:18px 20px; color:white; min-width:190px;">
+                  <div style="font-size:44px; line-height:.9; font-weight:900; letter-spacing:-0.07em; color:#FF8323;">+1500</div>
+                  <div style="margin-top:8px; font-size:14px; color:rgba(255,255,255,.76); font-weight:700;">empresas digitalizadas</div>
+                </div>
+
+                <div style="background:rgba(8,18,34,.68); backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:18px 20px; color:white; min-width:190px;">
+                  <div style="font-size:44px; line-height:.9; font-weight:900; letter-spacing:-0.07em; color:#5FE3FF;">+15</div>
+                  <div style="margin-top:8px; font-size:14px; color:rgba(255,255,255,.76); font-weight:700;">países conectados</div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq">
+        <div class="container">
+          <div class="section-head">
+            <h2>Todo lo que necesitás saber antes de empezar.</h2>
+            <p>Respuestas simples para que puedas avanzar con seguridad.</p>
+          </div>
+          <div class="faq">
+            <details open><summary>¿Puedo cancelar cuando quiera?</summary><p>Sí. No hay contrato de permanencia. Podés cancelar tu suscripción cuando lo necesites.</p></details>
+            <details><summary>¿Necesito tarjeta para probar?</summary><p>Sí. Activás una prueba gratuita de 15 días y el pago se procesa de forma segura.</p></details>
+            <details><summary>¿Es complejo de implementar?</summary><p>No. El flujo está pensado para empezar rápido, con una activación guiada y configuración simple.</p></details>
+            <details><summary>¿Qué pasa si necesito más usuarios?</summary><p>Persat GO incluye hasta 4 usuarios. Si necesitás ampliar tu operación, nuestro equipo puede ayudarte con una propuesta adaptada a tu empresa.</p></details>
+          </div>
+        </div>
+      </section>
+
+      <section style="padding:0 0 32px;">
+        <div class="container">
+          <div style="background:linear-gradient(135deg,#FFF3E8,#FFFFFF); border:1px solid rgba(18,18,37,.08); box-shadow:0 20px 50px rgba(18,18,37,.08); border-radius:40px; padding:42px; display:grid; grid-template-columns:1fr auto; gap:28px; align-items:center; overflow:hidden; position:relative;">
+            <div style="position:absolute; width:280px; height:280px; border-radius:50%; background:radial-gradient(circle, rgba(255,131,35,.18), transparent 70%); right:-80px; top:-120px;"></div>
+            <div style="position:relative; z-index:2; max-width:760px;">
+              <div class="eyebrow" style="margin-bottom:18px;">Transformación digital asistida</div>
+              <h2 style="margin:0; font-size:clamp(30px,4vw,52px); line-height:1.02; letter-spacing:-0.06em; font-weight:900; color:#111122;">¿Necesitás atención personalizada para digitalizar tu empresa?</h2>
+              <p style="margin:18px 0 0; color:var(--muted); font-size:18px; line-height:1.6; font-weight:600; max-width:620px;">Completá el formulario y nuestros asesores de transformación digital se pondrán en contacto con vos para ayudarte a ordenar tu operación y elegir la mejor configuración para tu equipo.</p>
+            </div>
+            <div style="position:relative; z-index:2; display:flex; flex-direction:column; gap:14px; min-width:260px;">
+              <button class="btn btn-primary" style="padding:18px 26px; font-size:15px;" onclick="openCheckout()">Quiero asesoramiento</button>
+              <span style="font-size:13px; color:var(--muted); font-weight:800; text-align:center;">Respuesta en menos de 24 hs</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="final-cta">
+        <div class="container final-card">
+          <h2>Tu operación ya puede funcionar mejor.</h2>
+          <p>Empezá hoy con Persat GO y convertí el seguimiento de campo en una experiencia simple, visible y medible.</p>
+          <button class="btn btn-primary" onclick="openCheckout()">Crear cuenta gratis</button>
+          <div class="microtrust" style="justify-content:center;color:rgba(255,255,255,.72)">
+            <span><b class="check">✓</b> 15 días gratis</span>
+            <span><b class="check">✓</b> Sin permanencia</span>
+            <span><b class="check">✓</b> Activación guiada</span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="sticky-mobile">
+    <strong>USD 99/mes<br><span style="color:var(--muted)">15 días gratis</span></strong>
+    <button class="btn btn-primary" onclick="openCheckout()">Probar ahora</button>
+  </div>
+
+  <div class="checkout-modal" id="checkoutModal" role="dialog" aria-modal="true" aria-label="Checkout Persat GO">
+    <div class="checkout-card">
+      <div class="checkout-main">
+        <div class="modal-top">
+          <div><h2>Activá tu prueba</h2><p>Activación rápida y configuración simple.</p></div>
+          <button class="close" onclick="closeCheckout()" aria-label="Cerrar">×</button>
+        </div>
+        <div class="form-grid">
+          <label>Nombre<input placeholder="Ej. Carolina" /></label>
+          <label>Apellido<input placeholder="Ej. Coronel" /></label>
+          <label class="full">Email corporativo<input placeholder="nombre@empresa.com" /></label>
+          <label>Teléfono<input placeholder="+54 9..." /></label>
+          <label>Personal en calle<select><option>1 a 4 usuarios</option></select></label>
+          <label class="full">Vertical<select><option>Servicios técnicos / mantenimiento</option><option>Logística y distribución</option><option>Inspecciones</option><option>Ventas en campo</option><option>Otra</option></select></label>
+        </div>
+        <div class="payment-options">
+          <div class="payment-option selected" data-payment="paypal" onclick="selectPayment('paypal')">
+            <div class="payment-brand">
+              <span class="payment-logo paypal-logo">PayPal</span>
+              <div class="payment-copy"><strong>Pagar con PayPal</strong><small>Suscripción mensual en dólares</small></div>
+            </div>
+            <span>→</span>
+          </div>
+          <div class="payment-option" data-payment="mercadopago" onclick="selectPayment('mercadopago')">
+            <div class="payment-brand">
+              <span class="payment-logo mp-logo">Mercado Pago</span>
+              <div class="payment-copy"><strong>Pagar con Mercado Pago</strong><small>Suscripción mensual en pesos argentinos</small></div>
+            </div>
+            <span>→</span>
+          </div>
+        </div>
+        <div class="secure-line"><span>🔒 Datos protegidos</span><span>SSL encriptado</span><span>15 días gratis</span></div>
+      </div>
+      <aside class="checkout-aside">
+        <div class="aside-card">
+          <h3 style="margin:0 0 12px; font-size:24px; letter-spacing:-.04em;">Tu suscripción</h3>
+          <div class="summary-line"><span>Plan GO</span><strong>USD 99</strong></div>
+          <div class="summary-line"><span>Usuarios adicionales</span><strong id="summary-users">USD 0</strong></div>
+          <div class="summary-line"><span>Check Me</span><strong id="summary-checkme">USD 0</strong></div>
+          <div class="summary-line"><span>PIA</span><strong id="summary-pia">USD 0</strong></div>
+          <div class="summary-line"><span>Total mensual</span><strong class="summary-total" id="summary-total">USD 99</strong></div>
+          <button class="btn btn-primary" style="width:100%; margin-top:18px;" onclick="submitCheckout()">Continuar al pago seguro</button>
+          <p style="color:var(--muted); font-size:13px; font-weight:700; line-height:1.45; margin:16px 0 0;">Tu prueba gratuita comienza hoy. Podés cancelar durante la prueba gratuita.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="thank-modal" id="thankModal" role="dialog" aria-modal="true" aria-label="Solicitud recibida Persat GO">
+    <div class="thank-card">
+      <div class="thank-icon">✓</div>
+      <h2>Listo, recibimos tu solicitud.</h2>
+      <p>Ya tenemos los datos para activar tu prueba de Persat GO. El próximo paso es completar el pago seguro y dejar configurada tu operación inicial.</p>
+      <div class="thank-next">
+        <div class="thank-step"><b>1. Pago seguro</b>Te redirigimos al método seleccionado.</div>
+        <div class="thank-step"><b>2. Activación</b>Validamos tu cuenta y plan.</div>
+        <div class="thank-step"><b>3. Puesta en marcha</b>Coordinamos la configuración inicial.</div>
+      </div>
+      <button class="btn btn-primary" onclick="closeThankYou()">Cerrar</button>
+
+    </div>
+  </div>
+
+  <script>
+    const prices = {
+      base: 99,
+      users: 25,
+      checkme: 19,
+      pia: 80
+    };
+
+    const quantities = {
+      users: 0,
+      checkme: 0,
+      pia: 0
+    };
+
+    let selectedPayment = 'paypal';
+
+    function formatUSD(value) {
+      return `USD ${value}`;
+    }
+
+    function calculateTotal() {
+      return prices.base +
+        quantities.users * prices.users +
+        quantities.checkme * prices.checkme +
+        quantities.pia * prices.pia;
+    }
+
+    function changeQty(item, delta) {
+      quantities[item] = Math.max(0, quantities[item] + delta);
+      updateQuote();
+    }
+
+    function selectPayment(method) {
+      selectedPayment = method;
+      document.querySelectorAll('.payment-option').forEach(option => {
+        option.classList.toggle('selected', option.dataset.payment === method);
+      });
+    }
+
+    function updateQuote() {
+      document.getElementById('qty-users').textContent = quantities.users;
+      document.getElementById('qty-checkme').textContent = quantities.checkme;
+      document.getElementById('qty-pia').textContent = quantities.pia;
+
+      const usersTotal = quantities.users * prices.users;
+      const checkmeTotal = quantities.checkme * prices.checkme;
+      const piaTotal = quantities.pia * prices.pia;
+      const total = calculateTotal();
+
+      document.getElementById('quote-total').textContent = formatUSD(total);
+      document.getElementById('summary-users').textContent = formatUSD(usersTotal);
+      document.getElementById('summary-checkme').textContent = formatUSD(checkmeTotal);
+      document.getElementById('summary-pia').textContent = formatUSD(piaTotal);
+      document.getElementById('summary-total').textContent = formatUSD(total);
+    }
+
+    function openCheckout() {
+      document.getElementById('checkoutModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCheckout() {
+      document.getElementById('checkoutModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function submitCheckout() {
+      const requiredFields = document.querySelectorAll('#checkoutModal input, #checkoutModal select');
+      let isValid = true;
+
+      requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+          field.style.borderColor = '#E27023';
+          field.style.boxShadow = '0 0 0 4px rgba(255,131,35,.12)';
+          isValid = false;
+        } else {
+          field.style.borderColor = 'rgba(18,18,37,.12)';
+          field.style.boxShadow = 'none';
+        }
+      });
+
+      if (!isValid) return;
+
+      closeCheckout();
+      document.getElementById('thankModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+
+      // Reemplazar este bloque por la redirección real cuando estén los links finales.
+      // if (selectedPayment === 'paypal') window.location.href = 'LINK_PAYPAL';
+      // if (selectedPayment === 'mercadopago') window.location.href = 'LINK_MERCADOPAGO';
+    }
+
+    function closeThankYou() {
+      document.getElementById('thankModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeCheckout();
+        closeThankYou();
+      }
+    });
+  </script>
+  <!-- Botpress Webchat -->
+  <script src="https://cdn.botpress.cloud/webchat/v3.6/inject.js"></script>
+  <script src="https://files.bpcontent.cloud/2026/05/16/18/20260516182447-E1L7CFIL.js" defer></script>
+
+</body>
+</html>
