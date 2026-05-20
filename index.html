@@ -1348,6 +1348,114 @@
       .sticky-mobile { display: flex; }
       body { padding-bottom: 82px; }
     }
+
+    /* ── Hero video block ── */
+    .hero-video-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-radius: 28px;
+      overflow: hidden;
+      background: linear-gradient(160deg, #1e1540 0%, #2a1f6e 60%, #3b2a8a 100%);
+      box-shadow: 0 24px 64px rgba(60,30,120,.35);
+      max-width: 520px;
+      width: 100%;
+    }
+    .hv-card {
+      position: relative;
+      width: 100%;
+    }
+    .hv-pill {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 10;
+      background: rgba(255,255,255,.15);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,.25);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 20px;
+      letter-spacing: .02em;
+    }
+    .hv-video-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+    }
+    .hv-video-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .hv-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 40px 20px 16px;
+      background: linear-gradient(to top, rgba(20,10,60,.85) 0%, transparent 100%);
+      pointer-events: none;
+    }
+    .hv-vid-title {
+      margin: 0 0 3px;
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+    }
+    .hv-vid-sub {
+      margin: 0;
+      font-size: 12px;
+      color: rgba(255,255,255,.75);
+      font-weight: 600;
+    }
+    .hv-desc {
+      padding: 20px 22px 16px;
+      background: rgba(255,255,255,.07);
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .hv-desc-title {
+      margin: 0 0 8px;
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.3;
+    }
+    .hv-desc-body {
+      margin: 0;
+      font-size: 13px;
+      color: rgba(255,255,255,.7);
+      font-weight: 600;
+      line-height: 1.6;
+    }
+    .hv-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: rgba(255,255,255,.08);
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .hv-mini-card {
+      background: rgba(255,255,255,.06);
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .hv-mini-card strong {
+      font-size: 13px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .hv-mini-card span {
+      font-size: 11px;
+      color: rgba(255,255,255,.6);
+      font-weight: 600;
+      line-height: 1.4;
+    }
   </style>
 </head>
 <body>
@@ -1408,36 +1516,32 @@
             </div>
           </div>
 
-          <div class="hero-card" id="demo" aria-label="Vista de producto Persat GO">
-            <div class="app-window">
-              <div class="window-top">
-                <div class="dots"><i></i><i></i><i></i></div>
-                <span class="status-pill"><span class="pulse"></span> Operación en vivo</span>
-              </div>
-              <div class="dashboard">
-                <div class="metric"><strong>24</strong><span>visitas activas</span></div>
-                <div class="metric"><strong>92%</strong><span>cumplimiento diario</span></div>
-                <div class="task">
-                  <div class="avatar-row">
-                    <div class="avatar">JG</div>
-                    <div><strong>Juan García</strong><br><span>Zona Norte · En ruta</span></div>
-                  </div>
-                  <span class="status-pill">check-in OK</span>
-                </div>
-                <div class="route-card">
-                  <strong>Ruta inteligente del día</strong><br>
-                  <span>8 visitas · 6 completas · 2 pendientes</span>
-                  <div class="route-map"></div>
+          <div class="hero-video-block" id="demo">
+            <!-- Video card -->
+            <div class="hv-card">
+              <div class="hv-pill">▶ Video producto</div>
+              <div class="hv-video-wrap">
+                <img
+                  src="https://img.youtube.com/vi/WT_pUDC5Flo/maxresdefault.jpg"
+                  alt="Así se ve Persat en acción"
+                  onerror="this.src='https://img.youtube.com/vi/WT_pUDC5Flo/hqdefault.jpg'"
+                />
+                <div class="hv-overlay">
+                  <p class="hv-vid-title">Así se ve Persat en acción</p>
+                  <p class="hv-vid-sub">Operación en campo, visitas y control desde la app.</p>
                 </div>
               </div>
-              <div class="floating">
-                <div class="floating-top">
-                  <strong>PIA generó el resumen operativo</strong>
-                  <span class="status-pill">IA</span>
-                </div>
-                <p>PIA analiza visitas, formularios y pendientes para ayudarte a decidir más rápido.</p>
-                <div class="progress"><div class="bar"></div></div>
-              </div>
+            </div>
+            <!-- Descripción -->
+            <div class="hv-desc">
+              <p class="hv-desc-title">Miralo en acción antes de empezar.</p>
+              <p class="hv-desc-body">El video muestra cómo Persat ayuda a coordinar equipos en campo, registrar visitas y centralizar información operativa desde una sola plataforma.</p>
+            </div>
+            <!-- 3 cards -->
+            <div class="hv-cards">
+              <div class="hv-mini-card"><strong>Campo</strong><span>Técnicos, visitas y tareas desde la app.</span></div>
+              <div class="hv-mini-card"><strong>Control</strong><span>Estados y seguimiento en tiempo real.</span></div>
+              <div class="hv-mini-card"><strong>Datos</strong><span>Reportes para decidir más rápido.</span></div>
             </div>
           </div>
         </div>
@@ -1927,6 +2031,5 @@
   <!-- Botpress Webchat -->
   <script src="https://cdn.botpress.cloud/webchat/v3.6/inject.js"></script>
   <script src="https://files.bpcontent.cloud/2026/05/16/18/20260516182447-E1L7CFIL.js" defer></script>
-
 </body>
 </html>
